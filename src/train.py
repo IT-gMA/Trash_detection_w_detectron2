@@ -1,26 +1,31 @@
 from detectron2.engine import DefaultTrainer
-from detectron2.config import get_cfg
-from detectron2 import model_zoo
-from configs import MODEL_CONFIG_FILE, NUM_CLASSES, DEVICE_NAME
-from dataset import register
+from configs import CKPT_SAVE_PATH, TRAIN_IMG_PATH, VALIDATION_IMG_PATH, ANN_FILE_NAME, \
+    TRAIN_DATASET_NAME, VALIDATION_DATASET_NAME, DEVICE_NAME
+from detectron2.data.datasets import register_coco_instances
+from utils import *
 import os
+import pickle
 
-register()
-cfg = get_cfg()
-cfg.merge_from_file(model_zoo.get_config_file(MODEL_CONFIG_FILE))
-cfg.MODEL.DEVICE_NAME = DEVICE_NAME
-cfg.DATASETS.TRAIN = ("garbage_train",)
-cfg.DATASETS.TEST = ()
-cfg.DATALOADER.NUM_WORKERS = 2
-cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url(MODEL_CONFIG_FILE)  # Let training initialize from model zoo
-cfg.SOLVER.IMS_PER_BATCH = 2
-cfg.SOLVER.BASE_LR = 0.00025  # pick a good LR
-cfg.SOLVER.MAX_ITER = 300
-cfg.SOLVER.STEPS = []        # do not decay learning rate
-cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1   # faster, and good enough for this toy dataset (default: 512)
-cfg.MODEL.ROI_HEADS.NUM_CLASSES = NUM_CLASSES
+register_coco_instances(TRAIN_DATASET_NAME, {}, TRAIN_IMG_PATH + "/" + ANN_FILE_NAME, TRAIN_IMG_PATH)
+register_coco_instances(VALIDATION_DATASET_NAME, {}, VALIDATION_IMG_PATH + "/" + ANN_FILE_NAME, VALIDATION_IMG_PATH)
 
-os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
-trainer = DefaultTrainer(cfg)
-trainer.resume_or_load(resume=False)
-trainer.train()
+
+# draw_samples(dataset_name=TRAIN_DATASET_NAME, sample_dir=TRAIN_IMG_PATH, n=4)
+
+def main():
+    print("Running on {}".format(DEVICE_NAME))
+    cfg = get_train_cfg(train_dataset_name=TRAIN_DATASET_NAME, valid_dataset_name=VALIDATION_DATASET_NAME)
+
+    # Save this cfg for testing or inferencing later
+    with open(CKPT_SAVE_PATH, 'wb') as f:
+        pickle.dump(cfg, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+    trainer = DefaultTrainer(cfg)
+    trainer.resume_or_load(resume=False)  # Since we're not continuing the training from any checkpoint
+    trainer.train()
+
+
+if __name__ == '__main__':
+    main()
