@@ -46,8 +46,8 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
 def image_inference(img_dir, predictor):
     test_images = glob.glob(f"{img_dir}/*")
     for img_path in test_images:
-        output = predictor(img)
         img = cv2.imread(img_path)
+        output = predictor(img)
         visualiser = Visualizer(img[:, :, ::-1], metadata={}, scale=0.5, instance_mode=ColorMode.SEGMENTATION)
         labeled_img = visualiser.draw_instance_predictions(output.to("cpu"))
 
