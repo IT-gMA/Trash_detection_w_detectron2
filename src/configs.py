@@ -1,7 +1,7 @@
 import torch
 
 
-MODEL_CONFIG_FILE = "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"
+MODEL_CONFIG_FILE = "COCO-Detection/faster_rcnn_X_101_32x8d_FPN_3x.yaml"
 
 # Dataset resources
 DATASET_PATH = "../images"
