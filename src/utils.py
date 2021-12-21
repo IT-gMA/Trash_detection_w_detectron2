@@ -1,5 +1,3 @@
-from detectron2.engine import DefaultPredictor
-from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog, DatasetCatalog
 from detectron2.utils.visualizer import ColorMode, Visualizer
 from detectron2.config import get_cfg
@@ -37,6 +35,7 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
     cfg.SOLVER.BASE_LR = 0.00025
     cfg.SOLVER.MAX_ITER = 300
     cfg.SOLVER.STEPS = []
+    cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 2
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = NUM_CLASSES
     cfg.MODEL.DEVICE_NAME = DEVICE_NAME
     cfg.OUTPUT_DIR = OUTPUT_DIR
@@ -44,18 +43,38 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
     return cfg
 
 
-def on_image_batch(img_dir, predictor):
+def image_inference(img_dir, predictor):
     test_images = glob.glob(f"{img_dir}/*")
     for img_path in test_images:
         output = predictor(img)
         img = cv2.imread(img_path)
-        visualiser = Visualizer(img[:, :, ::-1], metadata={}, scale=0.5,
-                                instance_mode=ColorMode.SEGMENTATION)
+        visualiser = Visualizer(img[:, :, ::-1], metadata={}, scale=0.5, instance_mode=ColorMode.SEGMENTATION)
         labeled_img = visualiser.draw_instance_predictions(output.to("cpu"))
 
         cv2.imshow("Result", labeled_img.get_image()[:, :, ::-1])
         cv2.waitKey(0)
         cv2.destroyAllWindows()
+
+
+def video_inference(video_path, predictor):
+    video_capture = cv2.VideoCapture(video_path)
+    if not video_capture.isOpened():
+        raise Exception(f"Error opening video at {video_path}")
+
+    success, frame = video_capture.read()       # Try to play/read the first frame of the video
+    while success:  # While the video's frame is successfully read
+        output = predictor(frame)
+        visualiser = Visualizer(frame[:, :, ::-1], metadata={}, instance_mode=ColorMode.SEGMENTATION)
+        output = visualiser.draw_instance_predictions(output.to("cpu"))
+
+        cv2.imshow("Video", output.get_image()[:, :, ::-1])
+
+        # Configuring key press for quitting video playback
+        key = cv2.waitKey(1) & 0xFF
+        if key == ord("esc") or key == ord("q"):
+            break
+
+        success, frame = video_capture.read()   # Keep playing the next frame of the video
 
 
 
