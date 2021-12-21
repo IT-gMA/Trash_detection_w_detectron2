@@ -1,16 +1,20 @@
 from detectron2.engine import DefaultTrainer
 from configs import CKPT_SAVE_PATH, TRAIN_IMG_PATH, VALIDATION_IMG_PATH, ANN_FILE_NAME, \
-    TRAIN_DATASET_NAME, VALIDATION_DATASET_NAME, DEVICE_NAME
+    TRAIN_DATASET_NAME, VALIDATION_DATASET_NAME, DEVICE_NAME, VISUALISE_SAMPLES, TEST_DATASET_NAME, TEST_IMG_PATH, OUTPUT_DIR
 from detectron2.data.datasets import register_coco_instances
-from utils import *
+from utils import draw_samples, get_train_cfg
 import os
 import pickle
 
+# Register the COCO format train and validation dataset
 register_coco_instances(TRAIN_DATASET_NAME, {}, TRAIN_IMG_PATH + "/" + ANN_FILE_NAME, TRAIN_IMG_PATH)
 register_coco_instances(VALIDATION_DATASET_NAME, {}, VALIDATION_IMG_PATH + "/" + ANN_FILE_NAME, VALIDATION_IMG_PATH)
+register_coco_instances(TEST_DATASET_NAME, {}, TEST_IMG_PATH + "/" + ANN_FILE_NAME, VALIDATION_IMG_PATH)
 
+if VISUALISE_SAMPLES:
+    num_visualised_samples = 5
+    draw_samples(dataset_name=TRAIN_DATASET_NAME, sample_dir=TRAIN_IMG_PATH, n=num_visualised_samples)
 
-# draw_samples(dataset_name=TRAIN_DATASET_NAME, sample_dir=TRAIN_IMG_PATH, n=4)
 
 def main():
     print("Running on {}".format(DEVICE_NAME))
@@ -28,4 +32,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    #main()
+    print("")
