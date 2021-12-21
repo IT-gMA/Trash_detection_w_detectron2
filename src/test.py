@@ -2,7 +2,7 @@ from detectron2.engine import DefaultPredictor
 import os
 import pickle
 from utils import *
-from configs import CKPT_SAVE_PATH, TEST_DATA_PATH
+from configs import CKPT_SAVE_PATH, INFERENCE_IMG_PATH
 
 '''with open(CKPT_SAVE_PATH, 'rb') as f:
     # Obtain the configuration file
@@ -13,4 +13,4 @@ cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7     # Only display detected objects 
 predictor = DefaultPredictor(cfg)  # Initialiser the object predictor'''
 predictor = None
 
-on_image_batch(TEST_DATA_PATH, predictor)
+image_inference(INFERENCE_IMG_PATH, predictor)
