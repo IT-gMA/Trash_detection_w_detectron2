@@ -6,8 +6,8 @@ from detectron2.config import get_cfg
 from detectron2 import model_zoo
 import random
 import cv2
-import matplotlib.pyplot as plt
-from configs import TRAIN_DATASET_NAME, VALIDATION_DATASET_NAME, NUM_CLASSES, OUTPUT_DIR, MODEL_CONFIG_FILE, DEVICE_NAME
+import glob
+from configs import NUM_CLASSES, OUTPUT_DIR, MODEL_CONFIG_FILE, DEVICE_NAME
 
 
 def draw_samples(dataset_name, sample_dir, n=1):
@@ -42,4 +42,21 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
     cfg.OUTPUT_DIR = OUTPUT_DIR
 
     return cfg
+
+
+def on_image_batch(img_dir, predictor):
+    test_images = glob.glob(f"{img_dir}/*")
+    for img_path in test_images:
+        output = predictor(img)
+        img = cv2.imread(img_path)
+        visualiser = Visualizer(img[:, :, ::-1], metadata={}, scale=0.5,
+                                instance_mode=ColorMode.SEGMENTATION)
+        labeled_img = visualiser.draw_instance_predictions(output.to("cpu"))
+
+        cv2.imshow("Result", labeled_img.get_image()[:, :, ::-1])
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+
+
 
