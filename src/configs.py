@@ -1,7 +1,7 @@
 import torch
 
 
-MODEL_CONFIG_FILE = "COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml"
+MODEL_CONFIG_FILE = "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"
 
 # Dataset resources
 DATASET_PATH = "../images"
@@ -10,7 +10,7 @@ VALIDATION_IMG_PATH = "../images/valid"
 TEST_IMG_PATH = "../images/test"
 # Name of the annotation file in json format for COCO dataset, given the config file's name is the same across train, valid and test
 ANN_FILE_NAME = "_annotations.coco.json"
-RESIZE_FACTOR = 0.8    # The percentage for resize the original image down to
+RESIZE_FACTOR = 0.25    # The percentage for resize the original image down to
 
 VISUALISE_SAMPLES = False
 

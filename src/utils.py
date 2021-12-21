@@ -32,13 +32,13 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
     cfg.DATASETS.TRAIN = (train_dataset_name,)
     cfg.DATASETS.TEST = (valid_dataset_name,)
 
-    cfg.DATALOADER.NUM_WORKERS = 2
+    cfg.DATALOADER.NUM_WORKERS = 5
     cfg.SOLVER.IMS_PER_BATCH = 2
     cfg.SOLVER.BASE_LR = 0.00025
-    cfg.SOLVER.MAX_ITER = 300
+    cfg.SOLVER.MAX_ITER = 10000
     cfg.SOLVER.STEPS = []
     #cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128
-    cfg.MODEL.ROI_HEADS.NUM_CLASSES = NUM_CLASSES + 1
+    cfg.MODEL.ROI_HEADS.NUM_CLASSES = NUM_CLASSES
     cfg.MODEL.DEVICE_NAME = DEVICE_NAME
     cfg.OUTPUT_DIR = OUTPUT_DIR
 
@@ -67,7 +67,7 @@ def video_inference(video_path, predictor):
     while success:  # While the video's frame is successfully read
         output = predictor(frame)
         visualiser = Visualizer(frame[:, :, ::-1], metadata={}, instance_mode=ColorMode.SEGMENTATION)
-        output = visualiser.draw_instance_predictions(output["instances0"].to("cpu"))
+        output = visualiser.draw_instance_predictions(output["instances"].to("cpu"))
 
         cv2.imshow("Video", output.get_image()[:, :, ::-1])
 

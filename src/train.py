@@ -8,6 +8,7 @@ from utils import draw_samples, get_train_cfg
 import os
 from dataset import custom_mapper
 import pickle
+import torch
 
 # Register the COCO format train and validation dataset
 register_coco_instances(TRAIN_DATASET_NAME, {}, TRAIN_IMG_PATH + "/" + ANN_FILE_NAME, TRAIN_IMG_PATH)
@@ -27,6 +28,9 @@ class AugTrainer(DefaultTrainer):
 
 def main():
     print("Running on {}".format(DEVICE_NAME))
+    if DEVICE_NAME == 'cuda':
+        torch.cuda.empty_cache()
+
     cfg = get_train_cfg(train_dataset_name=TRAIN_DATASET_NAME, valid_dataset_name=VALIDATION_DATASET_NAME)
 
     # Save this cfg for testing or inferencing later
