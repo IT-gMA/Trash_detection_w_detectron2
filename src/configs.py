@@ -10,7 +10,7 @@ VALIDATION_IMG_PATH = "../images/valid"
 TEST_IMG_PATH = "../images/test"
 # Name of the annotation file in json format for COCO dataset, given the config file's name is the same across train, valid and test
 ANN_FILE_NAME = "_annotations.coco.json"
-RESIZE_FACTOR = 0.5     # The percentage for resize the original image down to
+RESIZE_FACTOR = 0.8    # The percentage for resize the original image down to
 
 VISUALISE_SAMPLES = False
 

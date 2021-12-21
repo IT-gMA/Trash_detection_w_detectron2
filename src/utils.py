@@ -18,6 +18,8 @@ def draw_samples(dataset_name, sample_dir, n=1):
         out = visualiser.draw_dataset_dict(sample)
 
         img_name = sample["file_name"].replace(sample_dir, "")
+        out_img = out.get_image()[:, :, ::-1]
+        print("dataset size {}, sample = {}".format(out_img.shape, sample))
         cv2.imshow(img_name, out.get_image()[:, :, ::-1])
         cv2.waitKey(0)
 
@@ -31,11 +33,11 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
     cfg.DATASETS.TEST = (valid_dataset_name,)
 
     cfg.DATALOADER.NUM_WORKERS = 2
-    cfg.SOLVER.IMS_PER_BATCH = 4
+    cfg.SOLVER.IMS_PER_BATCH = 2
     cfg.SOLVER.BASE_LR = 0.00025
     cfg.SOLVER.MAX_ITER = 300
     cfg.SOLVER.STEPS = []
-    cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128
+    #cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = NUM_CLASSES + 1
     cfg.MODEL.DEVICE_NAME = DEVICE_NAME
     cfg.OUTPUT_DIR = OUTPUT_DIR

@@ -1,9 +1,12 @@
 from detectron2.engine import DefaultTrainer
 from configs import CKPT_SAVE_PATH, TRAIN_IMG_PATH, VALIDATION_IMG_PATH, ANN_FILE_NAME, \
-    TRAIN_DATASET_NAME, VALIDATION_DATASET_NAME, DEVICE_NAME, VISUALISE_SAMPLES, TEST_DATASET_NAME, TEST_IMG_PATH, OUTPUT_DIR
+    TRAIN_DATASET_NAME, VALIDATION_DATASET_NAME, DEVICE_NAME, VISUALISE_SAMPLES, TEST_DATASET_NAME, TEST_IMG_PATH, \
+    OUTPUT_DIR
 from detectron2.data.datasets import register_coco_instances
+from detectron2.data import build_detection_test_loader, build_detection_train_loader
 from utils import draw_samples, get_train_cfg
 import os
+from dataset import custom_mapper
 import pickle
 
 # Register the COCO format train and validation dataset
@@ -16,6 +19,12 @@ if VISUALISE_SAMPLES:
     draw_samples(dataset_name=TRAIN_DATASET_NAME, sample_dir=TRAIN_IMG_PATH, n=num_visualised_samples)
 
 
+class AugTrainer(DefaultTrainer):
+    @classmethod
+    def build_train_loader(cls, cfg):
+        return build_detection_train_loader(cfg, mapper=custom_mapper)
+
+
 def main():
     print("Running on {}".format(DEVICE_NAME))
     cfg = get_train_cfg(train_dataset_name=TRAIN_DATASET_NAME, valid_dataset_name=VALIDATION_DATASET_NAME)
@@ -26,7 +35,7 @@ def main():
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    trainer = DefaultTrainer(cfg)
+    trainer = AugTrainer(cfg)
     trainer.resume_or_load(resume=False)  # Since we're not continuing the training from any checkpoint
     trainer.train()
 
