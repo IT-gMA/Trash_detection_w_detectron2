@@ -12,7 +12,7 @@ TEST_IMG_PATH = "../images/test"
 ANN_FILE_NAME = "_annotations.coco.json"
 RESIZE_FACTOR = 0.5     # The percentage for resize the original image down to
 
-VISUALISE_SAMPLES = True
+VISUALISE_SAMPLES = False
 
 DEVICE_NAME = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')       # Device torch will run on
 DEVICE_NAME = f"{DEVICE_NAME}"
