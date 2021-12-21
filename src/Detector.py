@@ -4,10 +4,7 @@ from detectron2.data import MetadataCatalog
 from detectron2.utils.visualizer import ColorMode, Visualizer
 from detectron2 import model_zoo
 from configs import DEVICE_NAME, MODEL_CONFIG_FILE
-
 import cv2
-import numpy as np
-import torch
 
 
 class Detector:
@@ -22,7 +19,7 @@ class Detector:
         self.cfg.MODEL.ROI_HEADS.SCORE_HEADS_TEST = 0.7
         self.cfg.MODEL.DEVICE_NAME = DEVICE_NAME
 
-        self.predictor = DefaultPredictor(self.cfg)  # Initialiser the object predictor
+        self.predictor = DefaultPredictor(self.cfg)  # Initialise the object predictor
 
     def img_pred(self, img_path):
         img = cv2.imread(img_path)
