@@ -27,4 +27,5 @@ TRAIN_DATASET_NAME = "trash_train"
 VALIDATION_DATASET_NAME = "trash_valid"
 TEST_DATASET_NAME = "trash_test"
 CKPT_SAVE_PATH = "OD_cfg.pickle"
+TEST_DATA_PATH = "../test_data"
 
