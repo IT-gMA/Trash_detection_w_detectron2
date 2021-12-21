@@ -8,8 +8,11 @@ DATASET_PATH = "../images"
 TRAIN_IMG_PATH = "../images/train"
 VALIDATION_IMG_PATH = "../images/valid"
 TEST_IMG_PATH = "../images/test"
-ANN_FILE_NAME = "_annotations.coco.json"    # Name of the annotation file in json format for COCO dataset
+# Name of the annotation file in json format for COCO dataset, given the config file's name is the same across train, valid and test
+ANN_FILE_NAME = "_annotations.coco.json"
 RESIZE_FACTOR = 0.5     # The percentage for resize the original image down to
+
+VISUALISE_SAMPLES = True
 
 DEVICE_NAME = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')       # Device torch will run on
 DEVICE_NAME = f"{DEVICE_NAME}"
@@ -27,5 +30,6 @@ TRAIN_DATASET_NAME = "trash_train"
 VALIDATION_DATASET_NAME = "trash_valid"
 TEST_DATASET_NAME = "trash_test"
 CKPT_SAVE_PATH = "OD_cfg.pickle"
-TEST_DATA_PATH = "../test_data"
+INFERENCE_IMG_PATH = "../test_data"
+INFERENCE_VIDEO_PATH = "../.mp4"
 
