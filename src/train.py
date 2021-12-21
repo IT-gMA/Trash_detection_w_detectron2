@@ -9,11 +9,11 @@ import os
 from dataset import custom_mapper
 import pickle
 import torch
+from eval import evaluate_model
 
 # Register the COCO format train and validation dataset
 register_coco_instances(TRAIN_DATASET_NAME, {}, TRAIN_IMG_PATH + "/" + ANN_FILE_NAME, TRAIN_IMG_PATH)
 register_coco_instances(VALIDATION_DATASET_NAME, {}, VALIDATION_IMG_PATH + "/" + ANN_FILE_NAME, VALIDATION_IMG_PATH)
-register_coco_instances(TEST_DATASET_NAME, {}, TEST_IMG_PATH + "/" + ANN_FILE_NAME, VALIDATION_IMG_PATH)
 
 if VISUALISE_SAMPLES:
     num_visualised_samples = 5
@@ -42,6 +42,9 @@ def main():
     trainer = AugTrainer(cfg)
     trainer.resume_or_load(resume=False)  # Since we're not continuing the training from any checkpoint
     trainer.train()
+
+    # Start evaluation
+    evaluate_model(after_train=True, cfg=cfg, predictor=trainer, eval_dataset_name=VALIDATION_DATASET_NAME)
 
 
 if __name__ == '__main__':
