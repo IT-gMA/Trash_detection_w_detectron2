@@ -33,9 +33,9 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
     cfg.DATASETS.TEST = (valid_dataset_name,)
 
     cfg.DATALOADER.NUM_WORKERS = 2
-    cfg.SOLVER.IMS_PER_BATCH = 2
+    cfg.SOLVER.IMS_PER_BATCH = 6
     cfg.SOLVER.BASE_LR = 0.00025
-    cfg.SOLVER.MAX_ITER = 100
+    cfg.SOLVER.MAX_ITER = 300
     cfg.SOLVER.STEPS = []
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = NUM_CLASSES
     cfg.MODEL.DEVICE_NAME = DEVICE_NAME
