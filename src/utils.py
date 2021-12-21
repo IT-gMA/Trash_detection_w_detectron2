@@ -31,12 +31,12 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
     cfg.DATASETS.TEST = (valid_dataset_name,)
 
     cfg.DATALOADER.NUM_WORKERS = 2
-    cfg.SOLVER.IMS_PER_BATCH = 6
+    cfg.SOLVER.IMS_PER_BATCH = 1
     cfg.SOLVER.BASE_LR = 0.00025
     cfg.SOLVER.MAX_ITER = 300
     cfg.SOLVER.STEPS = []
     cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 2
-    cfg.MODEL.ROI_HEADS.NUM_CLASSES = NUM_CLASSES
+    cfg.MODEL.ROI_HEADS.NUM_CLASSES = NUM_CLASSES + 1
     cfg.MODEL.DEVICE_NAME = DEVICE_NAME
     cfg.OUTPUT_DIR = OUTPUT_DIR
 
@@ -49,7 +49,7 @@ def image_inference(img_dir, predictor):
         img = cv2.imread(img_path)
         output = predictor(img)
         visualiser = Visualizer(img[:, :, ::-1], metadata={}, scale=0.5, instance_mode=ColorMode.SEGMENTATION)
-        labeled_img = visualiser.draw_instance_predictions(output.to("cpu"))
+        labeled_img = visualiser.draw_instance_predictions(output["instances"].to("cpu"))
 
         cv2.imshow("Result", labeled_img.get_image()[:, :, ::-1])
         cv2.waitKey(0)
@@ -65,7 +65,7 @@ def video_inference(video_path, predictor):
     while success:  # While the video's frame is successfully read
         output = predictor(frame)
         visualiser = Visualizer(frame[:, :, ::-1], metadata={}, instance_mode=ColorMode.SEGMENTATION)
-        output = visualiser.draw_instance_predictions(output.to("cpu"))
+        output = visualiser.draw_instance_predictions(output["instances0"].to("cpu"))
 
         cv2.imshow("Video", output.get_image()[:, :, ::-1])
 

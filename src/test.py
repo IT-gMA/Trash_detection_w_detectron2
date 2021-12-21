@@ -11,6 +11,5 @@ with open(CKPT_SAVE_PATH, 'rb') as f:
 cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")  # Point to the complete trained model
 cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7     # Only display detected objects with confidence level greater than 70%
 predictor = DefaultPredictor(cfg)  # Initialiser the object predictor
-predictor = None
 
 image_inference(INFERENCE_IMG_PATH, predictor)
