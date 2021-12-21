@@ -1,2 +1,4 @@
 /images/
 /src/outputs/
+/src/__pycache__/configs.cpython-38.pyc
+/src/__pycache__/utils.cpython-38.pyc
