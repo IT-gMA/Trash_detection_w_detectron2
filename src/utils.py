@@ -45,12 +45,12 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
     return cfg
 
 
-def image_inference(img_dir, predictor):
+def image_inference(img_dir, predictor, meta_data):
     test_images = glob.glob(f"{img_dir}/*")
     for img_path in test_images:
         img = cv2.imread(img_path)
         output = predictor(img)
-        visualiser = Visualizer(img[:, :, ::-1], metadata={}, scale=0.5, instance_mode=ColorMode.SEGMENTATION)
+        visualiser = Visualizer(img[:, :, ::-1], metadata=meta_data, scale=0.5, instance_mode=ColorMode.SEGMENTATION)
         labeled_img = visualiser.draw_instance_predictions(output["instances"].to("cpu"))
 
         cv2.imshow("Result", labeled_img.get_image()[:, :, ::-1])
