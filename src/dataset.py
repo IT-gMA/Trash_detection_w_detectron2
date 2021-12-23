@@ -81,6 +81,11 @@ def custom_mapper(dataset_dict):
     new_height = int(dataset_dict["height"] * RESIZE_FACTOR)
     new_width = int(dataset_dict["width"] * RESIZE_FACTOR)
     new_dimension = (new_height, new_width)
+    if new_dimension < (800, 800):
+        new_dimension = (800, 800)
+
+    dataset_dict["height"] = new_height
+    dataset_dict["width"] = new_width
 
     transform_list = [T.Resize(new_dimension),      # Scale down the image a bit
                       T.RandomBrightness(0.8, 1.1),
