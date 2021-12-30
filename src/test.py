@@ -17,7 +17,7 @@ dataset_custom = DatasetCatalog.get(TEST_DATASET_NAME)
 dataset_custom_metadata = MetadataCatalog.get(TEST_DATASET_NAME)
 
 cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")  # Point to the complete trained model
-cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.12    # Only display detected objects with confidence level greater than 70%
+cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.50    # Only display detected objects with confidence level greater than 70%
 predictor = DefaultPredictor(cfg)  # Initialise the object predictor
 
 image_inference(INFERENCE_IMG_PATH, predictor, dataset_custom_metadata)
