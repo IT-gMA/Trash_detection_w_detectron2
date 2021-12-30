@@ -32,7 +32,7 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
     cfg.DATASETS.TRAIN = (train_dataset_name,)
     cfg.DATASETS.TEST = (valid_dataset_name,)
 
-    cfg.DATALOADER.NUM_WORKERS = 4
+    cfg.DATALOADER.NUM_WORKERS = 6
     cfg.SOLVER.IMS_PER_BATCH = 4
     cfg.SOLVER.BASE_LR = 0.0000215
     cfg.SOLVER.MAX_ITER = 155000

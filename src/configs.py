@@ -11,7 +11,7 @@ TEST_IMG_PATH = "../images/test"
 # Name of the annotation file in json format for COCO dataset, given the config file's name is the same across train, valid and test
 ANN_FILE_NAME = "_annotations.coco.json"
 RESIZE_FACTOR = 0.2    # The percentage for resize the original image down to
-MIN_DIM_THRESH = 760
+MIN_DIM_THRESH = 720
 
 VISUALISE_SAMPLES = False
 

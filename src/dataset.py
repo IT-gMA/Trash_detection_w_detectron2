@@ -4,7 +4,7 @@ import json
 import torch
 from detectron2.structures import BoxMode
 from detectron2.data import MetadataCatalog, DatasetCatalog, detection_utils
-from configs import CLASSES, DATASET_PATH, ANN_FILE_NAME, TEST_DATASET_NAME, RESIZE_FACTOR, TEST_IMG_PATH
+from configs import CLASSES, DATASET_PATH, ANN_FILE_NAME, TEST_DATASET_NAME, RESIZE_FACTOR, TEST_IMG_PATH, MIN_DIM_THRESH
 from utils import draw_samples
 from detectron2.data import transforms as T
 import copy
@@ -81,10 +81,10 @@ def custom_mapper(dataset_dict):
     new_height = int(dataset_dict["height"] * RESIZE_FACTOR)
     new_width = int(dataset_dict["width"] * RESIZE_FACTOR)
     new_dimension = (new_height, new_width)
-    if new_dimension < (800, 800):
-        new_dimension = (800, 800)
-        new_height = 800
-        new_width = 800
+    if new_dimension < (MIN_DIM_THRESH, MIN_DIM_THRESH):
+        new_dimension = (MIN_DIM_THRESH, MIN_DIM_THRESH)
+        new_height = MIN_DIM_THRESH
+        new_width = MIN_DIM_THRESH
 
     dataset_dict["height"] = new_height
     dataset_dict["width"] = new_width
