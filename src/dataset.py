@@ -83,6 +83,8 @@ def custom_mapper(dataset_dict):
     new_dimension = (new_height, new_width)
     if new_dimension < (800, 800):
         new_dimension = (800, 800)
+        new_height = 800
+        new_width = 800
 
     dataset_dict["height"] = new_height
     dataset_dict["width"] = new_width
