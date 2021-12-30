@@ -40,7 +40,7 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     trainer = AugTrainer(cfg)
-    trainer.resume_or_load(resume=False)  # Since we're not continuing the training from any checkpoint
+    trainer.resume_or_load(resume=True)
     trainer.train()
 
     # Start evaluation

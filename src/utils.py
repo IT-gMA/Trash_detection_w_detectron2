@@ -32,10 +32,10 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
     cfg.DATASETS.TRAIN = (train_dataset_name,)
     cfg.DATASETS.TEST = (valid_dataset_name,)
 
-    cfg.DATALOADER.NUM_WORKERS = 2
-    cfg.SOLVER.IMS_PER_BATCH = 2
-    cfg.SOLVER.BASE_LR = 0.000025
-    cfg.SOLVER.MAX_ITER = 10000
+    cfg.DATALOADER.NUM_WORKERS = 4
+    cfg.SOLVER.IMS_PER_BATCH = 4
+    cfg.SOLVER.BASE_LR = 0.0000215
+    cfg.SOLVER.MAX_ITER = 155000
     cfg.SOLVER.STEPS = []
     #cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = NUM_CLASSES
