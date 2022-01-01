@@ -3,7 +3,7 @@ From: pytorch/pytorch:1.10.0-cuda11.3-cudnn8-runtime
 
 %post
     apt-get update -y && apt-get install -y libgtk2.0-dev
-    apt-get -y install gcc g++ git \
+
     python3 -m pip --no-cache-dir install \
     opencv-python \
     'git+https://github.com/facebookresearch/detectron2.git' \
