@@ -6,3 +6,4 @@ images/valid
 /src/__pycache__/utils.cpython-38.pyc
 *.pickles
 *.out
+*.sif
