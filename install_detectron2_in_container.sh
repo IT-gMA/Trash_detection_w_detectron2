@@ -10,5 +10,4 @@
 
 module load singularity
 
-SINGULARITYENV_CUDA=$CUDA_HOME
-time srun singularity exec --nv $MYGROUP/Detectron2_trash_recogntion/detectron2_run_container.sif python3 -m pip install -e detectron2
+time srun singularity exec --nv $MYGROUP/Detectron2_trash_recogntion/detectron2_run_container.sif python -m pip install -e detectron2
