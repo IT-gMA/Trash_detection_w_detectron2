@@ -7,3 +7,4 @@ images/valid
 *.pickles
 *.out
 *.sif
+detectron2
