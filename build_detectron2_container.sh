@@ -11,4 +11,4 @@
 module load singularity
 
 time srun singularity remote login --topaz-detectron2
-time srun singularity build -r detectron2_run_container detectron2.def
+time srun singularity build -r detectron2_run_container.sif detectron2.def
