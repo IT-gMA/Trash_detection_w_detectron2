@@ -5,7 +5,7 @@ from detectron2 import model_zoo
 import random
 import cv2
 import glob
-from configs import NUM_CLASSES, OUTPUT_DIR, MODEL_CONFIG_FILE, DEVICE_NAME
+from configs import NUM_CLASSES, OUTPUT_DIR, MODEL_CONFIG_FILE, DEVICE_NAME, BATCH_SIZE, BASE_LR, NUM_WORKERS, NUM_EPOCHS
 
 
 def draw_samples(dataset_name, sample_dir, n=1):
@@ -32,10 +32,10 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
     cfg.DATASETS.TRAIN = (train_dataset_name,)
     cfg.DATASETS.TEST = (valid_dataset_name,)
 
-    cfg.DATALOADER.NUM_WORKERS = 6
-    cfg.SOLVER.IMS_PER_BATCH = 4
-    cfg.SOLVER.BASE_LR = 0.0000215
-    cfg.SOLVER.MAX_ITER = 155000
+    cfg.DATALOADER.NUM_WORKERS = NUM_WORKERS
+    cfg.SOLVER.IMS_PER_BATCH = BATCH_SIZE
+    cfg.SOLVER.BASE_LR = BASE_LR
+    cfg.SOLVER.MAX_ITER = NUM_EPOCHS
     cfg.SOLVER.STEPS = []
     #cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = NUM_CLASSES

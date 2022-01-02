@@ -25,6 +25,11 @@ CLASSES = [
     'plastic film', 'plastic straw', 'styrofoam', 'styrofoam cup'
 ]
 NUM_CLASSES = 18
+BATCH_SIZE = 4
+BASE_LR = 0.0000215
+NUM_EPOCHS = 155000
+NUM_WORKERS = 6
+
 
 OUTPUT_DIR = "outputs"
 TRAIN_DATASET_NAME = "trash_train"
