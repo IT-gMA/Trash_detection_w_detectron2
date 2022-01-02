@@ -8,4 +8,4 @@
 #SBATCH --export=NONE
 
 echo "downloading"
-curl -L "https://app.roboflow.com/ds/i7VeDlsmEE?key=HW3VFMJ6dh" > roboflow.zip; unzip roboflow.zip; rm roboflow.zip
+curl -L "https://app.roboflow.com/ds/Da7d7E7lS1?key=rUGfukR59y" > roboflow.zip; unzip roboflow.zip; rm roboflow.zip
