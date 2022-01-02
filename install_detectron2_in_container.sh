@@ -7,7 +7,8 @@
 #SBATCH --cpus-per-task=1
 #SBTACH --account=interns2021026
 #SBATCH --output=log-install-detectron2.out
+#SBATCH --export=NONE
 
 module load singularity
 
-time srun singularity exec --nv $MYGROUP/Detectron2_trash_recogntion/detectron2_run_container.sif python -m pip install -e detectron2
+time srun singularity exec --nv $MYGROUP/Detectron2_trash_recogntion/detectron2_run_container.sif python3 -m pip install -e detectron2
