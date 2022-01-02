@@ -1,3 +1,4 @@
+import argparse
 from detectron2.engine import DefaultTrainer
 from configs import CKPT_SAVE_PATH, TRAIN_IMG_PATH, VALIDATION_IMG_PATH, ANN_FILE_NAME, \
     TRAIN_DATASET_NAME, VALIDATION_DATASET_NAME, DEVICE_NAME, VISUALISE_SAMPLES, TEST_DATASET_NAME, TEST_IMG_PATH, \
@@ -26,7 +27,30 @@ class AugTrainer(DefaultTrainer):
         return build_detection_train_loader(cfg, mapper=custom_mapper)
 
 
+def parse_opt(known=False):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--resume', type=str, default='false', help='resume training progress from a checkpoint .pth')
+    opt = parser.parse_known_args()[0] if known else parser.parse_args()
+    return opt
+
+
+def is_resumed():
+    resume_training = False
+    opt = parse_opt()
+    if opt.resume:
+        ckpt_path = opt.resume
+        if ckpt_path != 'false':
+            print("Resume training from {}".format(ckpt_path))
+            resume_training = True
+        else:
+            print("Start from scratch: ")
+    return resume_training
+
+
 def main():
+    # Train model from scratch or from previous checkpoint
+    resume_training = is_resumed()
+
     print("Running on {}".format(DEVICE_NAME))
     if DEVICE_NAME == 'cuda':
         torch.cuda.empty_cache()
@@ -40,7 +64,7 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     trainer = AugTrainer(cfg)
-    trainer.resume_or_load(resume=True)
+    trainer.resume_or_load(resume=resume_training)
     trainer.train()
 
     # Start evaluation
