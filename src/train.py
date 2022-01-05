@@ -48,7 +48,8 @@ def is_resumed():
 
 
 def main():
-    # Train model from scratch or from previous checkpoint
+    # Train model from scratch or from previous checkpoint (.pth) saved in OUTPUT_DIR so no need to specify ckpt path
+    # in run arguments
     resume_training = is_resumed()
 
     print("Running on {}".format(DEVICE_NAME))
