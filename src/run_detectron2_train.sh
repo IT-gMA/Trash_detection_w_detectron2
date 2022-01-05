@@ -1,14 +1,14 @@
 #!/bin/bash  --login
 
 #SBATCH --partition=gpuq
-#SBATCH --nodes=1
+#SBATCH --nodes=2
 #SBATCH --gres=gpu:2
 #SBATCH --time=24:00:00
 #SBATCH --tasks-per-node=1
 #SBATCH --cpus-per-task=1
 #SBTACH --account=interns2021026
-#SBATCH --export=NONE
 #SBATCH --output=mdoan_run.out
+#SBATCH --export=NONE
 
 module load cuda
 module load singularity

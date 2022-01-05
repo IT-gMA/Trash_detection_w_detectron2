@@ -2,6 +2,7 @@
 images/train
 images/valid
 /src/outputs/
+/src/outputs2/
 /src/__pycache__/configs.cpython-38.pyc
 /src/__pycache__/utils.cpython-38.pyc
 *.pickles
