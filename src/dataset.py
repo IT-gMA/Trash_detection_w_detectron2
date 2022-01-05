@@ -95,7 +95,8 @@ def custom_mapper(dataset_dict):
                       T.RandomFlip(prob=0.5, horizontal=True, vertical=False),
                       T.RandomContrast(intensity_min=0.8, intensity_max=1.1),
                       T.RandomLighting(scale=0.6),
-                      T.RandomRotation(sample_style="range", angle=[-25, 25])
+                      T.RandomRotation(sample_style="range", angle=[-30, 5]),
+                      T.RandomCrop(crop_type="relative", crop_size=(0.6, 0.5))
                       ]
     image, transforms = T.apply_transform_gens(transform_list, image)
     dataset_dict["image"] = torch.as_tensor(image.transpose(2, 0, 1).astype("float32"))
