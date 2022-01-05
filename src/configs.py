@@ -11,7 +11,7 @@ TEST_IMG_PATH = "../images/test"
 # Name of the annotation file in json format for COCO dataset, given the config file's name is the same across train, valid and test
 ANN_FILE_NAME = "_annotations.coco.json"
 RESIZE_FACTOR = 0.2    # The percentage for resize the original image down to
-MIN_DIM_THRESH = 736
+MIN_DIM_THRESH = 700
 
 VISUALISE_SAMPLES = False
 
@@ -25,17 +25,17 @@ CLASSES = [
     'plastic film', 'plastic straw', 'styrofoam', 'styrofoam cup'
 ]
 NUM_CLASSES = 18
-BATCH_SIZE = 9
-BASE_LR = 0.000205
+BATCH_SIZE = 10
+BASE_LR = 0.00025
 NUM_EPOCHS = 155000
-NUM_WORKERS = 6
+NUM_WORKERS = 4
 
 
-OUTPUT_DIR = "outputs"
+OUTPUT_DIR = "outputs2"
 TRAIN_DATASET_NAME = "trash_train"
 VALIDATION_DATASET_NAME = "trash_valid"
 TEST_DATASET_NAME = "trash_test"
-CKPT_SAVE_PATH = "OD_cfg.pickle"
+CKPT_SAVE_PATH = "OD_cfg2.pickle"
 INFERENCE_IMG_PATH = "../test_data"
 INFERENCE_VIDEO_PATH = "../.mp4"
 
