@@ -5,7 +5,8 @@ from detectron2 import model_zoo
 import random
 import cv2
 import glob
-from configs import NUM_CLASSES, OUTPUT_DIR, MODEL_CONFIG_FILE, DEVICE_NAME, BATCH_SIZE, BASE_LR, NUM_WORKERS, NUM_EPOCHS
+from configs import NUM_CLASSES, OUTPUT_DIR, MODEL_CONFIG_FILE, DEVICE_NAME, BATCH_SIZE, BASE_LR, NUM_WORKERS, \
+    NUM_EPOCHS, EVAL_PERIOD, SAVE_PERIOD
 
 
 def draw_samples(dataset_name, sample_dir, n=1):
@@ -30,11 +31,13 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
     cfg.merge_from_file(model_zoo.get_config_file(MODEL_CONFIG_FILE))
     cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url(MODEL_CONFIG_FILE)
     cfg.DATASETS.TRAIN = (train_dataset_name,)
-    cfg.DATASETS.TEST = (valid_dataset_name,)
+    cfg.DATASETS.TEST = (valid_dataset_name,)       # For evaluation
+    cfg.TEST.EVAL_PERIOD = EVAL_PERIOD
 
     cfg.DATALOADER.NUM_WORKERS = NUM_WORKERS
     cfg.SOLVER.IMS_PER_BATCH = BATCH_SIZE
     cfg.SOLVER.BASE_LR = BASE_LR
+    cfg.SOLVER.CHECKPOINT_PERIOD = SAVE_PERIOD
     cfg.SOLVER.MAX_ITER = NUM_EPOCHS
     cfg.SOLVER.STEPS = []
     #cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128
