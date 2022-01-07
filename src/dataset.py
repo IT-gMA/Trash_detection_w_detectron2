@@ -116,7 +116,7 @@ def custom_mapper_valididation(dataset_dict):
     new_width = int(dataset_dict["width"] * EVAL_RESIZE_FACTOR)
     new_dimension = (new_height, new_width)
     if new_dimension < (EVAL_RESIZE_MIN_DIM, EVAL_RESIZE_MIN_DIM):
-        new_dimension = (EVAL_RESIZE_FACTOR, EVAL_RESIZE_MIN_DIM)
+        new_dimension = (EVAL_RESIZE_MIN_DIM, EVAL_RESIZE_MIN_DIM)
         new_height = EVAL_RESIZE_MIN_DIM
         new_width = EVAL_RESIZE_MIN_DIM
 
