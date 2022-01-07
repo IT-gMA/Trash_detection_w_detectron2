@@ -76,8 +76,8 @@ def main():
     trainer = AugTrainer(cfg)
     test_loader = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
     evaluator = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
-    AugTrainer.test(cfg, trainer, evaluators=list(evaluator))
     trainer.resume_or_load(resume=resume_training)
+    AugTrainer.test(cfg, trainer, evaluators=list(evaluator))
 
     trainer.train()
 
