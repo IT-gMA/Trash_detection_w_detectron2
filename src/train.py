@@ -7,7 +7,7 @@ from detectron2.data.datasets import register_coco_instances
 from detectron2.data import build_detection_test_loader, build_detection_train_loader
 from utils import draw_samples, get_train_cfg
 import os
-from dataset import custom_mapper
+from dataset import custom_mapper, custom_mapper_valididation
 import pickle
 import torch
 from eval import evaluate_model
@@ -27,6 +27,9 @@ class AugTrainer(DefaultTrainer):
     @classmethod
     def build_train_loader(cls, cfg):
         return build_detection_train_loader(cfg, mapper=custom_mapper)
+    @classmethod
+    def build_test_loader(cls, cfg, dataset_name):
+        return build_detection_test_loader(cfg, mapper=custom_mapper_valididation)
 
 
 def parse_opt(known=False):

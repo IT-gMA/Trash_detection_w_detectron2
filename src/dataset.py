@@ -4,7 +4,8 @@ import json
 import torch
 from detectron2.structures import BoxMode
 from detectron2.data import MetadataCatalog, DatasetCatalog, detection_utils
-from configs import CLASSES, DATASET_PATH, ANN_FILE_NAME, TEST_DATASET_NAME, RESIZE_FACTOR, TEST_IMG_PATH, MIN_DIM_THRESH
+from configs import CLASSES, DATASET_PATH, ANN_FILE_NAME, TEST_DATASET_NAME, RESIZE_FACTOR, TEST_IMG_PATH, \
+                    MIN_DIM_THRESH, EVAL_RESIZE_FACTOR, EVAL_RESIZE_MIN_DIM
 from utils import draw_samples
 from detectron2.data import transforms as T
 import copy
@@ -70,10 +71,6 @@ def register():
         MetadataCatalog.get("trash_" + d).set(thing_classes=CLASSES)
 
 
-#garbage_metadata = MetadataCatalog.get("trash_train")
-#print(garbage_metadata)
-
-
 def custom_mapper(dataset_dict):
     dataset_dict = copy.deepcopy(dataset_dict)
     image = detection_utils.read_image(dataset_dict["file_name"], format="BGR")
@@ -98,6 +95,35 @@ def custom_mapper(dataset_dict):
                       T.RandomRotation(sample_style="range", angle=[-30, 5]),
                       T.RandomCrop(crop_type="relative", crop_size=(0.6, 0.5))
                       ]
+    image, transforms = T.apply_transform_gens(transform_list, image)
+    dataset_dict["image"] = torch.as_tensor(image.transpose(2, 0, 1).astype("float32"))
+
+    annos = [
+        detection_utils.transform_instance_annotations(obj, transforms, image.shape[:2])
+        for obj in dataset_dict.pop("annotations")
+        if obj.get("iscrowd", 0) == 0
+    ]
+    instances = detection_utils.annotations_to_instances(annos, image.shape[:2])
+    dataset_dict["instances"] = detection_utils.filter_empty_instances(instances)
+    return dataset_dict
+
+
+def custom_mapper_valididation(dataset_dict):
+    dataset_dict = copy.deepcopy(dataset_dict)
+    image = detection_utils.read_image(dataset_dict["file_name"], format="BGR")
+
+    new_height = int(dataset_dict["height"] * EVAL_RESIZE_FACTOR)
+    new_width = int(dataset_dict["width"] * EVAL_RESIZE_FACTOR)
+    new_dimension = (new_height, new_width)
+    if new_dimension < (EVAL_RESIZE_MIN_DIM, EVAL_RESIZE_MIN_DIM):
+        new_dimension = (EVAL_RESIZE_FACTOR, EVAL_RESIZE_MIN_DIM)
+        new_height = EVAL_RESIZE_MIN_DIM
+        new_width = EVAL_RESIZE_MIN_DIM
+
+    dataset_dict["height"] = new_height
+    dataset_dict["width"] = new_width
+
+    transform_list = [T.Resize(new_dimension)]     # Scale down the image a bit
     image, transforms = T.apply_transform_gens(transform_list, image)
     dataset_dict["image"] = torch.as_tensor(image.transpose(2, 0, 1).astype("float32"))
 
