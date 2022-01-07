@@ -29,7 +29,7 @@ class AugTrainer(DefaultTrainer):
         return build_detection_train_loader(cfg, mapper=custom_mapper)
     @classmethod
     def build_test_loader(cls, cfg, dataset_name):
-        return build_detection_test_loader(cfg, mapper=custom_mapper_valididation)
+        return build_detection_test_loader(cfg, dataset=dataset_name, mapper=custom_mapper_valididation)
 
 
 def parse_opt(known=False):
