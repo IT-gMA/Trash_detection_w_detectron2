@@ -1,8 +1,8 @@
 #!/bin/bash  --login
 
 #SBATCH --partition=gpuq
-#SBATCH --nodes=2
-#SBATCH --gres=gpu:2
+#SBATCH --nodes=1
+#SBATCH --gres=gpu:1
 #SBATCH --time=24:00:00
 #SBATCH --tasks-per-node=1
 #SBATCH --cpus-per-task=1
