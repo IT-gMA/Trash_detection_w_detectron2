@@ -75,24 +75,12 @@ def main():
 
     trainer = AugTrainer(cfg)
     trainer.resume_or_load(resume=resume_training)
-
-    eval_loader = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
-    evaluator = COCOEvaluator(VALIDATION_DATASET_NAME, cfg, False, output_dir=EVAL_OUTPUT_DIR)
-
-    AugTrainer.test(cfg, trainer.model, evaluator)
-    #inference_on_dataset(trainer.model, eval_loader, evaluator)
     trainer.train()
 
-
-    '''evaluator = COCOEvaluator(VALIDATION_DATASET_NAME, cfg, False, output_dir=EVAL_OUTPUT_DIR)
-    val_loader = build_detection_test_loader(cfg, VALIDATION_DATASET_NAME)
-    print(inference_on_dataset(trainer.model, val_loader, evaluator))'''
-
     # Start evaluation
-    #eval_loader = build_detection_test_loader(cfg, VALIDATION_DATASET_NAME)
-    #inference_on_dataset(trainer.model, eval_loader, evaluator)
-    #DefaultTrainer.test(evaluators=evaluator, model=trainer.model, cfg=cfg)
-    #evaluate_model(after_train=True, cfg=cfg, predictor=trainer, eval_dataset_name=VALIDATION_DATASET_NAME)
+    eval_loader = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
+    evaluator = AugTrainer.build_evaluator(cfg, VALIDATION_DATASET_NAME)
+    AugTrainer.test(cfg, trainer.model, evaluator)
 
 
 if __name__ == '__main__':
