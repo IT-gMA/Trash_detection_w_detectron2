@@ -27,9 +27,6 @@ class AugTrainer(DefaultTrainer):
     @classmethod
     def build_train_loader(cls, cfg):
         return build_detection_train_loader(cfg, mapper=custom_mapper)
-    @classmethod
-    def build_test_loader(cls, cfg, dataset_name):
-        return build_detection_test_loader(cfg, dataset=dataset_name, mapper=custom_mapper_valididation)
 
 
 def parse_opt(known=False):
@@ -68,12 +65,15 @@ def main():
         pickle.dump(cfg, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    evaluator = COCOEvaluator(VALIDATION_DATASET_NAME, cfg, False, output_dir=EVAL_OUTPUT_DIR)
 
     trainer = AugTrainer(cfg)
-    AugTrainer.build_test_loader(cfg=cfg, dataset_name=VALIDATION_DATASET_NAME)
+    #AugTrainer.build_test_loader(cfg=cfg, dataset_name=VALIDATION_DATASET_NAME)
     trainer.resume_or_load(resume=resume_training)
     trainer.train()
+
+    evaluator = COCOEvaluator(VALIDATION_DATASET_NAME, cfg, False, output_dir=EVAL_OUTPUT_DIR)
+    val_loader = build_detection_test_loader(cfg, VALIDATION_DATASET_NAME)
+    print(inference_on_dataset(trainer.model, val_loader, evaluator))
 
     # Start evaluation
     #eval_loader = build_detection_test_loader(cfg, VALIDATION_DATASET_NAME)
