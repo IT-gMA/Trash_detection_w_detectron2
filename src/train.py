@@ -32,25 +32,8 @@ class AugTrainer(DefaultTrainer):
         return build_detection_train_loader(cfg, mapper=custom_mapper)
 
     @classmethod
-    def build_evaluator(cls, cfg, dataset_name, output_folder=None):
-        return COCOEvaluator(VALIDATION_DATASET_NAME, cfg, False, output_dir=EVAL_OUTPUT_DIR)
-
-    @classmethod
-    def test_with_TTA(cls, cfg, model):
-        logger = logging.getLogger("detectron2.trainer")
-        # In the end of training, run an evaluation with TTA
-        # Only support some R-CNN models.
-        logger.info("Running inference with test-time augmentation ...")
-        model = GeneralizedRCNNWithTTA(cfg, model)
-        evaluators = [
-            cls.build_evaluator(
-                cfg, name, output_folder=os.path.join(cfg.OUTPUT_DIR, "inference_TTA")
-            )
-            for name in cfg.DATASETS.TEST
-        ]
-        res = cls.test(cfg, model, evaluators)
-        res = OrderedDict({k + "_TTA": v for k, v in res.items()})
-        return res
+    def build_test_loader(cls, cfg, dataset_name):
+        return build_detection_test_loader(cfg, dataset_name, mapper=custom_mapper_valididation(cfg, True))
 
 
 def parse_opt(known=False):
@@ -91,10 +74,10 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     trainer = AugTrainer(cfg)
+
     #AugTrainer.build_test_loader(cfg=cfg, dataset_name=VALIDATION_DATASET_NAME)
     trainer.resume_or_load(resume=resume_training)
-    res = AugTrainer.test(cfg, trainer.model)
-    print(res)
+
     trainer.train()
 
 
