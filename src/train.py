@@ -79,15 +79,11 @@ def main():
 
     trainer = AugTrainer(cfg)
     trainer.resume_or_load(resume=resume_training)
-    # Start evaluation
-    eval_loader = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
-    evaluator = AugTrainer.build_evaluator(cfg, VALIDATION_DATASET_NAME, EVAL_OUTPUT_DIR)
-    AugTrainer.test(cfg, trainer.model, evaluator)
     trainer.train()
 
     # Start evaluation
-    '''eval_loader = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
-    evaluator = AugTrainer.build_evaluator(cfg, VALIDATION_DATASET_NAME)'''
+    eval_loader = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
+    evaluator = AugTrainer.build_evaluator(cfg, VALIDATION_DATASET_NAME, EVAL_OUTPUT_DIR)
     AugTrainer.test(cfg, trainer.model, evaluator)
 
 
