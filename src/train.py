@@ -74,10 +74,12 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     trainer = AugTrainer(cfg)
-    test_loader = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
-    evaluator = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
     trainer.resume_or_load(resume=resume_training)
-    AugTrainer.test(cfg, trainer, evaluators=list(evaluator))
+
+    eval_loader = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
+    evaluator = COCOEvaluator(VALIDATION_DATASET_NAME, cfg, False, output_dir=EVAL_OUTPUT_DIR)
+
+    inference_on_dataset(trainer, eval_loader, evaluator)
 
     trainer.train()
 
