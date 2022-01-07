@@ -35,6 +35,10 @@ class AugTrainer(DefaultTrainer):
     def build_test_loader(cls, cfg, dataset_name):
         return build_detection_test_loader(cfg, dataset_name, mapper=custom_mapper_valididation)
 
+    @classmethod
+    def test(cls, cfg, model, evaluators=None):
+        return
+
 
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
@@ -75,12 +79,16 @@ def main():
 
     trainer = AugTrainer(cfg)
     trainer.resume_or_load(resume=resume_training)
-    trainer.train()
-
     # Start evaluation
     eval_loader = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
     evaluator = AugTrainer.build_evaluator(cfg, VALIDATION_DATASET_NAME)
-    AugTrainer.test(cfg, trainer.model, evaluator)
+    DefaultTrainer.test(cfg, trainer.model, evaluator)
+    trainer.train()
+
+    # Start evaluation
+    '''eval_loader = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
+    evaluator = AugTrainer.build_evaluator(cfg, VALIDATION_DATASET_NAME)'''
+    DefaultTrainer.test(cfg, trainer.model, evaluator)
 
 
 if __name__ == '__main__':
