@@ -65,16 +65,17 @@ def main():
         pickle.dump(cfg, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
+    evaluator = COCOEvaluator(VALIDATION_DATASET_NAME, cfg, False, output_dir=EVAL_OUTPUT_DIR)
 
     trainer = AugTrainer(cfg)
+    AugTrainer.test(evaluators=evaluator, model=trainer.model, cfg=cfg)
     trainer.resume_or_load(resume=resume_training)
     trainer.train()
 
     # Start evaluation
-    evaluator = COCOEvaluator(VALIDATION_DATASET_NAME, cfg, False, output_dir=EVAL_OUTPUT_DIR)
     eval_loader = build_detection_test_loader(cfg, VALIDATION_DATASET_NAME)
     #inference_on_dataset(trainer.model, eval_loader, evaluator)
-    DefaultTrainer.test(evaluators=evaluator, model=trainer.model, cfg=cfg)
+    #DefaultTrainer.test(evaluators=evaluator, model=trainer.model, cfg=cfg)
     #evaluate_model(after_train=True, cfg=cfg, predictor=trainer, eval_dataset_name=VALIDATION_DATASET_NAME)
 
 
