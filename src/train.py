@@ -5,11 +5,14 @@ from configs import CKPT_SAVE_PATH, TRAIN_IMG_PATH, VALIDATION_IMG_PATH, ANN_FIL
     OUTPUT_DIR, EVAL_OUTPUT_DIR
 from detectron2.data.datasets import register_coco_instances
 from detectron2.data import build_detection_test_loader, build_detection_train_loader
+from detectron2.modeling import GeneralizedRCNNWithTTA
 from utils import draw_samples, get_train_cfg
 import os
 from dataset import custom_mapper, custom_mapper_valididation
 import pickle
 import torch
+import logging
+from collections import OrderedDict
 from eval import evaluate_model
 #Evaluation with AP metric
 from detectron2.evaluation import COCOEvaluator, inference_on_dataset, DatasetEvaluators
@@ -27,6 +30,27 @@ class AugTrainer(DefaultTrainer):
     @classmethod
     def build_train_loader(cls, cfg):
         return build_detection_train_loader(cfg, mapper=custom_mapper)
+
+    @classmethod
+    def build_evaluator(cls, cfg, dataset_name, output_folder=None):
+        return COCOEvaluator(VALIDATION_DATASET_NAME, cfg, False, output_dir=EVAL_OUTPUT_DIR)
+
+    @classmethod
+    def test_with_TTA(cls, cfg, model):
+        logger = logging.getLogger("detectron2.trainer")
+        # In the end of training, run an evaluation with TTA
+        # Only support some R-CNN models.
+        logger.info("Running inference with test-time augmentation ...")
+        model = GeneralizedRCNNWithTTA(cfg, model)
+        evaluators = [
+            cls.build_evaluator(
+                cfg, name, output_folder=os.path.join(cfg.OUTPUT_DIR, "inference_TTA")
+            )
+            for name in cfg.DATASETS.TEST
+        ]
+        res = cls.test(cfg, model, evaluators)
+        res = OrderedDict({k + "_TTA": v for k, v in res.items()})
+        return res
 
 
 def parse_opt(known=False):
@@ -69,11 +93,14 @@ def main():
     trainer = AugTrainer(cfg)
     #AugTrainer.build_test_loader(cfg=cfg, dataset_name=VALIDATION_DATASET_NAME)
     trainer.resume_or_load(resume=resume_training)
+    res = AugTrainer.test(cfg, trainer.model)
+    print(res)
     trainer.train()
 
-    evaluator = COCOEvaluator(VALIDATION_DATASET_NAME, cfg, False, output_dir=EVAL_OUTPUT_DIR)
+
+    '''evaluator = COCOEvaluator(VALIDATION_DATASET_NAME, cfg, False, output_dir=EVAL_OUTPUT_DIR)
     val_loader = build_detection_test_loader(cfg, VALIDATION_DATASET_NAME)
-    print(inference_on_dataset(trainer.model, val_loader, evaluator))
+    print(inference_on_dataset(trainer.model, val_loader, evaluator))'''
 
     # Start evaluation
     #eval_loader = build_detection_test_loader(cfg, VALIDATION_DATASET_NAME)
