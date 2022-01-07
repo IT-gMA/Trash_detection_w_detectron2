@@ -2,7 +2,7 @@ import argparse
 from detectron2.engine import DefaultTrainer
 from configs import CKPT_SAVE_PATH, TRAIN_IMG_PATH, VALIDATION_IMG_PATH, ANN_FILE_NAME, \
     TRAIN_DATASET_NAME, VALIDATION_DATASET_NAME, DEVICE_NAME, VISUALISE_SAMPLES, TEST_DATASET_NAME, TEST_IMG_PATH, \
-    OUTPUT_DIR
+    OUTPUT_DIR, EVAL_OUTPUT_DIR
 from detectron2.data.datasets import register_coco_instances
 from detectron2.data import build_detection_test_loader, build_detection_train_loader
 from utils import draw_samples, get_train_cfg
@@ -11,6 +11,8 @@ from dataset import custom_mapper
 import pickle
 import torch
 from eval import evaluate_model
+#Evaluation with AP metric
+from detectron2.evaluation import COCOEvaluator, inference_on_dataset, DatasetEvaluators
 
 # Register the COCO format train and validation dataset
 register_coco_instances(TRAIN_DATASET_NAME, {}, TRAIN_IMG_PATH + "/" + ANN_FILE_NAME, TRAIN_IMG_PATH)
@@ -69,7 +71,10 @@ def main():
     trainer.train()
 
     # Start evaluation
-    evaluate_model(after_train=True, cfg=cfg, predictor=trainer, eval_dataset_name=VALIDATION_DATASET_NAME)
+    evaluator = COCOEvaluator(VALIDATION_DATASET_NAME, cfg, False, output_dir=EVAL_OUTPUT_DIR)
+    eval_loader = build_detection_test_loader(cfg, VALIDATION_DATASET_NAME)
+    inference_on_dataset(trainer.model, eval_loader, evaluator)
+    #evaluate_model(after_train=True, cfg=cfg, predictor=trainer, eval_dataset_name=VALIDATION_DATASET_NAME)
 
 
 if __name__ == '__main__':

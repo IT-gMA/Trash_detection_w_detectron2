@@ -9,3 +9,4 @@ images/valid
 *.out
 *.sif
 detectron2
+/src/eval_outputs2/

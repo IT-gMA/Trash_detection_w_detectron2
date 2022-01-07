@@ -41,3 +41,5 @@ CKPT_SAVE_PATH = "OD_cfg2.pickle"
 INFERENCE_IMG_PATH = "../test_data"
 INFERENCE_VIDEO_PATH = "../.mp4"
 
+EVAL_OUTPUT_DIR = "eval_outputs2"
+
