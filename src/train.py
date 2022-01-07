@@ -35,10 +35,6 @@ class AugTrainer(DefaultTrainer):
     def build_test_loader(cls, cfg, dataset_name):
         return build_detection_test_loader(cfg, dataset_name, mapper=custom_mapper_valididation)
 
-    @classmethod
-    def test(cls, cfg, model, evaluators=None):
-        return
-
 
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
