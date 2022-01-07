@@ -74,8 +74,9 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     trainer = AugTrainer(cfg)
-
-    #AugTrainer.build_test_loader(cfg=cfg, dataset_name=VALIDATION_DATASET_NAME)
+    test_loader = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
+    evaluator = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
+    AugTrainer.test(cfg, trainer.model, evaluators=evaluator)
     trainer.resume_or_load(resume=resume_training)
 
     trainer.train()
