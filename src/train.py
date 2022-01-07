@@ -68,7 +68,7 @@ def main():
     evaluator = COCOEvaluator(VALIDATION_DATASET_NAME, cfg, False, output_dir=EVAL_OUTPUT_DIR)
 
     trainer = AugTrainer(cfg)
-    AugTrainer.test(evaluators=evaluator, model=trainer.model, cfg=cfg)
+    DefaultTrainer.test(evaluators=evaluator, model=trainer.model, cfg=cfg)
     trainer.resume_or_load(resume=resume_training)
     trainer.train()
 
