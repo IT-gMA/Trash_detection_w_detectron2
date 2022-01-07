@@ -82,13 +82,13 @@ def main():
     # Start evaluation
     eval_loader = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
     evaluator = AugTrainer.build_evaluator(cfg, VALIDATION_DATASET_NAME)
-    DefaultTrainer.test(cfg, trainer.model, evaluator)
+    AugTrainer.test(cfg, trainer.model, evaluator)
     trainer.train()
 
     # Start evaluation
     '''eval_loader = AugTrainer.build_test_loader(cfg, VALIDATION_DATASET_NAME)
     evaluator = AugTrainer.build_evaluator(cfg, VALIDATION_DATASET_NAME)'''
-    DefaultTrainer.test(cfg, trainer.model, evaluator)
+    AugTrainer.test(cfg, trainer.model, evaluator)
 
 
 if __name__ == '__main__':
