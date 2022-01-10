@@ -64,7 +64,7 @@ def image_inference(img_dir, predictor, meta_data, show=False, save=False):
 
         if save:
             i += 1
-            cv2.imwrite(f"{INF_RESULT_SAVE_DIR}/Result img {i}", labeled_img.get_image()[:, :, ::-1])
+            cv2.imwrite(f"{INF_RESULT_SAVE_DIR}/Result img {i}.jpg", labeled_img.get_image()[:, :, ::-1])
 
 
 def video_inference(video_path, predictor):
