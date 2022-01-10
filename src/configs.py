@@ -2,6 +2,7 @@ import torch
 
 
 MODEL_CONFIG_FILE = "COCO-Detection/faster_rcnn_R_101_FPN_3x.yaml"
+NUM_GPUS_RES = 4
 
 # Dataset resources
 DATASET_PATH = "../images"

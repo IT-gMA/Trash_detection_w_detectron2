@@ -2,10 +2,10 @@ import argparse
 from detectron2.engine import DefaultTrainer
 from configs import CKPT_SAVE_PATH, TRAIN_IMG_PATH, VALIDATION_IMG_PATH, ANN_FILE_NAME, \
     TRAIN_DATASET_NAME, VALIDATION_DATASET_NAME, DEVICE_NAME, VISUALISE_SAMPLES, TEST_DATASET_NAME, TEST_IMG_PATH, \
-    OUTPUT_DIR, EVAL_OUTPUT_DIR
+    OUTPUT_DIR, EVAL_OUTPUT_DIR, NUM_GPUS_RES
 from detectron2.data.datasets import register_coco_instances
 from detectron2.data import build_detection_test_loader, build_detection_train_loader
-from detectron2.modeling import GeneralizedRCNNWithTTA
+from detectron2.engine import launch
 from utils import draw_samples, get_train_cfg
 import os
 from dataset import custom_mapper, custom_mapper_valididation
@@ -88,4 +88,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    launch(main_func=main(), num_gpus_per_machine=NUM_GPUS_RES)
+    #main()

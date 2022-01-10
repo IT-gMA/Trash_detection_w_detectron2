@@ -2,7 +2,7 @@
 
 #SBATCH --partition=gpuq
 #SBATCH --nodes=1
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:4
 #SBATCH --time=24:00:00
 #SBATCH --tasks-per-node=1
 #SBATCH --cpus-per-task=1
