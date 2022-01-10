@@ -10,3 +10,4 @@ images/valid
 *.sif
 detectron2
 /src/eval_outputs2/
+/src/README.md
