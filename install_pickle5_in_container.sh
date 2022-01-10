@@ -15,4 +15,4 @@ export SINGULARITYENV_PYTHONUSERBASE="/group/interns2021026/mdoan/user_python"
 export SINGULARITYENV_MPLCONFIGDIR="/group/interns2021026/mdoan/user_python/matplotlib"
 export SINGULARITYENV_TORCH_HOME="/group/interns2021026/mdoan/torch_home"
 
-time srun singularity exec --nv $MYGROUP/Detectron2_trash_recogntion/detectron2_run_container.sif python3 -m pip install -e pickle5
+time srun singularity exec --nv $MYGROUP/Detectron2_trash_recogntion/detectron2_run_container.sif python3 -m pip install pickle5
