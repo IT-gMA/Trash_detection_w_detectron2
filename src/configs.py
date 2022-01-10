@@ -47,4 +47,5 @@ EVAL_RESIZE_MIN_DIM = 1000
 
 # Inference configs
 INF_MODEL_PATH = "outputs/model_0069999.pth"
+INF_RESULT_SAVE_DIR = "../test_img_result"
 MIN_CONFIDENCE = 0.55

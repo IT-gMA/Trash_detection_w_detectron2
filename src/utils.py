@@ -6,7 +6,7 @@ import random
 import cv2
 import glob
 from configs import NUM_CLASSES, OUTPUT_DIR, MODEL_CONFIG_FILE, DEVICE_NAME, BATCH_SIZE, BASE_LR, NUM_WORKERS, \
-    NUM_EPOCHS, EVAL_PERIOD, SAVE_PERIOD
+    NUM_EPOCHS, EVAL_PERIOD, SAVE_PERIOD, INF_RESULT_SAVE_DIR
 
 
 def draw_samples(dataset_name, sample_dir, n=1):
@@ -48,17 +48,23 @@ def get_train_cfg(train_dataset_name, valid_dataset_name):
     return cfg
 
 
-def image_inference(img_dir, predictor, meta_data):
+def image_inference(img_dir, predictor, meta_data, show=False, save=False):
     test_images = glob.glob(f"{img_dir}/*")
+    i = 0
     for img_path in test_images:
         img = cv2.imread(img_path)
         output = predictor(img)
         visualiser = Visualizer(img[:, :, ::-1], metadata=meta_data, scale=0.5, instance_mode=ColorMode.SEGMENTATION)
         labeled_img = visualiser.draw_instance_predictions(output["instances"].to("cpu"))
 
-        cv2.imshow("Result", labeled_img.get_image()[:, :, ::-1])
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        if show:
+            cv2.imshow("Result", labeled_img.get_image()[:, :, ::-1])
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+        if save:
+            i += 1
+            cv2.imwrite(f"{INF_RESULT_SAVE_DIR}/Result img {i}", labeled_img.get_image()[:, :, ::-1])
 
 
 def video_inference(video_path, predictor):
