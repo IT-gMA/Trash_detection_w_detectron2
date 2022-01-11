@@ -45,17 +45,26 @@ def is_save():
             print("No save")
     return save_images
 
+
 def inf_mode():
-    img_inf = True
+    inference_mode = 0
     opt = parse_opt()
     if opt.mode:
         arg = opt.mode
         if arg == "img" or arg == "image" or arg == "IMG" or arg == "images" or arg == "IMAGES":
+            # Still image inference
             print("Inference on images")
-        else:
-            img_inf = False
+        elif arg == "video" or arg == "VIDEO" or arg == "vid" or arg == "VID":
+            # Plain video inference
+            inference_mode = 1
             print("Video inference")
-    return img_inf
+        elif arg == "live" or arg == "LIVE" or arg == "live vid" or arg == "LIVE VID" or arg == "live_video":
+            # Live video inference
+            inference_mode = 2
+            print("Live video inference")
+        else:
+            inference_mode = 3
+    return inference_mode
 
 
 def main():
@@ -71,12 +80,16 @@ def main():
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = MIN_CONFIDENCE  # Only display detected objects with confidence level greater than 70%
     predictor = DefaultPredictor(cfg)  # Initialise the object predictor
 
-    if inf_mode():      # Image mode is selected for inference
+    if inf_mode() == 0:  # Image mode is selected for inference
         show_img = is_show()
         save_img = is_save()
         image_inference(INFERENCE_IMG_PATH, predictor, dataset_custom_metadata, show_img, save_img)
-    else:               # video is selected for inference
-        video_inference(INFERENCE_VIDEO_PATH, predictor, dataset_custom_metadata)
+    elif inf_mode() == 1:  # video is selected for inference
+        video_inference(INFERENCE_VIDEO_PATH, predictor, dataset_custom_metadata, live=False)
+    elif inf_mode() == 2:  # live video inference
+        video_inference(INFERENCE_VIDEO_PATH, predictor, dataset_custom_metadata, live=True)
+    else:
+        print("Invalid argument")
 
 
 if __name__ == '__main__':
