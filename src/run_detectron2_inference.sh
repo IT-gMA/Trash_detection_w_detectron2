@@ -17,4 +17,4 @@ export SINGULARITYENV_MPLCONFIGDIR="/group/interns2021026/mdoan/user_python/matp
 export SINGULARITYENV_TORCH_HOME="/group/interns2021026/mdoan/torch_home"
 
 SINGULARITYENV_CUDA=$CUDA_HOME
-time srun singularity exec --nv $MYGROUP/Detectron2_trash_recogntion/detectron2_run_container.sif python $MYGROUP/Detectron2_trash_recogntion/src/test.py --save true --show false
+time srun singularity exec --nv $MYGROUP/Detectron2_trash_recogntion/detectron2_run_container.sif python $MYGROUP/Detectron2_trash_recogntion/src/inference.py --save true --show false
