@@ -2,7 +2,7 @@ from detectron2.engine import DefaultPredictor
 import pickle
 from utils import *
 from configs import CKPT_SAVE_PATH, INFERENCE_IMG_PATH, TEST_IMG_PATH, ANN_FILE_NAME, TEST_DATASET_NAME, \
-    INF_MODEL_PATH, MIN_CONFIDENCE, INF_RESULT_SAVE_DIR
+    INF_MODEL_PATH, MIN_CONFIDENCE, INF_RESULT_SAVE_DIR, INFERENCE_VIDEO_PATH
 from detectron2.data.datasets import register_coco_instances
 import os
 import argparse
@@ -15,6 +15,7 @@ def parse_opt(known=False):
     parser.add_argument('--save', type=str, default='false',
                         help='save the resulting images from inference to a directory')
     parser.add_argument('--show', type=str, default='false', help='display the labeled images')
+    parser.add_argument('--mode', type=str, default='img', help='display the labeled images')
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
     return opt
 
@@ -44,6 +45,18 @@ def is_save():
             print("No save")
     return save_images
 
+def inf_mode():
+    img_inf = True
+    opt = parse_opt()
+    if opt.mode:
+        arg = opt.mode
+        if arg is "img" or "image" or "IMG" or "images" or "IMAGES":
+            print("Inference on images")
+        else:
+            img_inf = False
+            print("Video inference")
+    return img_inf
+
 
 def main():
     with open(CKPT_SAVE_PATH, 'rb') as f:
@@ -58,9 +71,12 @@ def main():
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = MIN_CONFIDENCE  # Only display detected objects with confidence level greater than 70%
     predictor = DefaultPredictor(cfg)  # Initialise the object predictor
 
-    show_img = is_show()
-    save_img = is_save()
-    image_inference(INFERENCE_IMG_PATH, predictor, dataset_custom_metadata, show_img, save_img)
+    if inf_mode():      # Image mode is selected for inference
+        show_img = is_show()
+        save_img = is_save()
+        image_inference(INFERENCE_IMG_PATH, predictor, dataset_custom_metadata, show_img, save_img)
+    else:               # video is selected for inference
+        video_inference(INFERENCE_VIDEO_PATH, predictor)
 
 
 if __name__ == '__main__':

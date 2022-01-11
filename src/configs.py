@@ -38,15 +38,19 @@ OUTPUT_DIR = "outputs"
 TRAIN_DATASET_NAME = "trash_train"
 VALIDATION_DATASET_NAME = "trash_valid"
 TEST_DATASET_NAME = "trash_test"
-CKPT_SAVE_PATH = "OD_cfg.pickle"
-INFERENCE_IMG_PATH = "../test_data"
-INFERENCE_VIDEO_PATH = "../.mp4"
 
 EVAL_OUTPUT_DIR = "eval_outputs"
 EVAL_RESIZE_FACTOR = 0.9
 EVAL_RESIZE_MIN_DIM = 1000
 
 # Inference configs
+CKPT_SAVE_PATH = "OD_cfg.pickle"
 INF_MODEL_PATH = "outputs/model_0069999.pth"
-INF_RESULT_SAVE_DIR = "../test_img_result"
 MIN_CONFIDENCE = 0.55
+
+INFERENCE_IMG_PATH = "../img_inference/test_data"
+INF_RESULT_SAVE_DIR = "../img_inference/test_result"
+
+INFERENCE_VIDEO_PATH = "../video_inference/test_data/test_video1.mov"
+
+
