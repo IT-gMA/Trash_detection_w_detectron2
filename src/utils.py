@@ -67,8 +67,8 @@ def image_inference(img_dir, predictor, meta_data, show=False, save=False):
             cv2.imwrite(f"{INF_RESULT_SAVE_DIR}/Result img {i}.jpg", labeled_img.get_image()[:, :, ::-1])
 
 
-def video_inference(video_path, predictor, metadata={}, live=False):
-    if live:
+def video_inference(video_path=None, predictor=None, metadata={}):
+    if video_path is None:
         vid_window_name = "Live detection"
         video_capture = cv2.VideoCapture(0)
     else:

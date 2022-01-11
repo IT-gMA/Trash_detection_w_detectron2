@@ -85,9 +85,9 @@ def main():
         save_img = is_save()
         image_inference(INFERENCE_IMG_PATH, predictor, dataset_custom_metadata, show_img, save_img)
     elif inf_mode() == 1:  # video is selected for inference
-        video_inference(INFERENCE_VIDEO_PATH, predictor, dataset_custom_metadata, live=False)
+        video_inference(INFERENCE_VIDEO_PATH, predictor, dataset_custom_metadata)
     elif inf_mode() == 2:  # live video inference
-        video_inference(INFERENCE_VIDEO_PATH, predictor, dataset_custom_metadata, live=True)
+        video_inference(None, predictor, dataset_custom_metadata)
     else:
         print("Invalid argument")
 
