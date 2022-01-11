@@ -50,7 +50,7 @@ def inf_mode():
     opt = parse_opt()
     if opt.mode:
         arg = opt.mode
-        if arg is "img" or "image" or "IMG" or "images" or "IMAGES":
+        if arg == "img" or arg == "image" or arg == "IMG" or arg == "images" or arg == "IMAGES":
             print("Inference on images")
         else:
             img_inf = False
@@ -76,7 +76,7 @@ def main():
         save_img = is_save()
         image_inference(INFERENCE_IMG_PATH, predictor, dataset_custom_metadata, show_img, save_img)
     else:               # video is selected for inference
-        video_inference(INFERENCE_VIDEO_PATH, predictor)
+        video_inference(INFERENCE_VIDEO_PATH, predictor, dataset_custom_metadata)
 
 
 if __name__ == '__main__':
