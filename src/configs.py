@@ -45,8 +45,8 @@ EVAL_RESIZE_MIN_DIM = 1000
 
 # Inference configs
 CKPT_SAVE_PATH = "OD_cfg.pickle"
-INF_MODEL_PATH = "outputs/model_0069999.pth"
-MIN_CONFIDENCE = 0.55
+INF_MODEL_PATH = "outputs/model_final.pth"
+MIN_CONFIDENCE = 0.65
 
 INFERENCE_IMG_PATH = "../img_inference/test_data"
 INF_RESULT_SAVE_DIR = "../img_inference/test_result"

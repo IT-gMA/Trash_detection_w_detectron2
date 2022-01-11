@@ -67,7 +67,7 @@ def image_inference(img_dir, predictor, meta_data, show=False, save=False):
             cv2.imwrite(f"{INF_RESULT_SAVE_DIR}/Result img {i}.jpg", labeled_img.get_image()[:, :, ::-1])
 
 
-def video_inference(video_path, predictor):
+def video_inference(video_path, predictor, metadata={}):
     video_capture = cv2.VideoCapture(video_path)
     if not video_capture.isOpened():
         raise Exception(f"Error opening video at {video_path}")
@@ -75,14 +75,14 @@ def video_inference(video_path, predictor):
     success, frame = video_capture.read()       # Try to play/read the first frame of the video
     while success:  # While the video's frame is successfully read
         output = predictor(frame)
-        visualiser = Visualizer(frame[:, :, ::-1], metadata={}, instance_mode=ColorMode.SEGMENTATION)
+        visualiser = Visualizer(frame[:, :, ::-1], metadata=metadata, instance_mode=ColorMode.SEGMENTATION)
         output = visualiser.draw_instance_predictions(output["instances"].to("cpu"))
 
         cv2.imshow("Video", output.get_image()[:, :, ::-1])
 
         # Configuring key press for quitting video playback
         key = cv2.waitKey(1) & 0xFF
-        if key == ord("esc") or key == ord("q"):
+        if key == ord("q") or key == ord("0"):
             break
 
         success, frame = video_capture.read()   # Keep playing the next frame of the video
